@@ -25,7 +25,7 @@ public class AuthController {
     public String login(@RequestBody LoginDTO login) {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(login.login(), login.password());
+                new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPassword());
 
         Authentication authenticate = this.authenticationManager
                 .authenticate(usernamePasswordAuthenticationToken);

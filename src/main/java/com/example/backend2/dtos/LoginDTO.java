@@ -1,5 +1,13 @@
 package com.example.backend2.dtos;
 
-public record LoginDTO (String login , String password) {
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class LoginDTO {
+
+    private String login;
+    private String password;
 }
