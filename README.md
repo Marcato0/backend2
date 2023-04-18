@@ -18,7 +18,7 @@ Possibilitando a requisição de orçamentos dos produtos disponibilizados pela 
 - [x] Metodologia agil usando Trello
 - [x] Preparação de ferramentas utilizadas InteliJ
 - [x] Implementação dos dados na api
-- [x] Implemetação de controle de acesso de usuario
+- [x] Implemetação de autenticação dos usuarios
 - [x] Testes em produção
 - [x] Testes automatizados utilizando Mokito
-- [x] Deploy da aplicação
+- [x] Deploy da aplicação com Jenkins
