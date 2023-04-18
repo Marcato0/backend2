@@ -34,9 +34,8 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(req -> req.getMethod().equals(HttpMethod.POST.name()) && req.getRequestURI().equals("/login")).permitAll()
-                .requestMatchers(req -> req.getMethod().equals(HttpMethod.GET.name()) && req.getRequestURI().equals("/login")).permitAll()
-                .requestMatchers(req -> req.getRequestURI().startsWith("http://localhost:8080/swagger-ui.html")).hasRole("ROLE_ADMINISTRATOR")
-                .requestMatchers(req -> req.getRequestURI().startsWith("http://localhost:8080/swagger-ui/index.html")).hasRole("ROLE_ADMINISTRATOR")
+                .requestMatchers(req -> req.getRequestURI().startsWith("http://localhost:8080/swagger-ui.html")).permitAll()
+                .requestMatchers(req -> req.getRequestURI().startsWith("http://localhost:8080/swagger-ui/index.html")).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
