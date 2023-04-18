@@ -1,0 +1,290 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend2.services</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductService (com.example.backend2.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductService</td>
+<td class="coverageStat">
+  <span class="percent">
+    16,7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3,6%
+  </span>
+  <span class="absValue">
+    (1/28)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProductService$$SpringCGLIB$$0</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3$auxiliary$axMpR8uO</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3$auxiliary$I9Il1Dux</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3$auxiliary$iP0c4z3P</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3$auxiliary$OgeSnWoO</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3$auxiliary$TdgfBwBb</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3$auxiliary$VpI6Xtjw</td>
+  </tr>
+  <tr>
+    <td class="name">ProductService$MockitoMock$dXBW56q3$auxiliary$XTeLy5Hi</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    16,7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    3,6%
+  </span>
+  <span class="absValue">
+    (1/28)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend2.services;
+&nbsp;
+&nbsp;import com.example.backend2.dtos.ProductDTO;
+&nbsp;import com.example.backend2.exceptions.DuplicateObjException;
+&nbsp;import com.example.backend2.exceptions.ResourceNotFoundException;
+&nbsp;import com.example.backend2.models.ProductModel;
+&nbsp;import com.example.backend2.repositories.ProductRepository;
+&nbsp;import jakarta.transaction.Transactional;
+&nbsp;import org.springframework.beans.BeanUtils;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class ProductService {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    ProductRepository productRepository;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Cria um produto com base no DTO fornecido e o salva no banco de dados.
+&nbsp;     *
+&nbsp;     * @param productDto o DTO que contém as informações do usuário a ser criado
+&nbsp;     * @return o produto criado e salvo no banco de dados
+&nbsp;     * @throws DuplicateObjException se já existir um produto com o mesmo nome
+&nbsp;     */
+&nbsp;    @Transactional
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    public ProductModel createProduct(ProductDTO productDto) {
+&nbsp;
+&nbsp;        // Remove espaços em branco no início e no fim do nome
+<b class="nc">&nbsp;        productDto.setName(productDto.getName().trim());</b>
+&nbsp;
+&nbsp;        // Converte o nome para letras minúsculas
+<b class="nc">&nbsp;        productDto.setName(productDto.getName().toLowerCase());</b>
+&nbsp;
+&nbsp;        // Verifica se já existe um produto com o mesmo nome
+<b class="nc">&nbsp;        if (productRepository.findByNameIgnoreCase(productDto.getName()).isPresent()) {</b>
+<b class="nc">&nbsp;            throw new DuplicateObjException(&quot;Product is already in use!&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;        // Cria um produto com base no DTO
+<b class="nc">&nbsp;        var product = new ProductModel();</b>
+<b class="nc">&nbsp;        BeanUtils.copyProperties(productDto, product);</b>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;        // Salva o usuário no banco de dados
+<b class="nc">&nbsp;        return productRepository.save(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retorna uma lista de todos os produtos salvos no banco de dados.
+&nbsp;     *
+&nbsp;     * @return uma lista de todos os produtos salvos no banco de dados
+&nbsp;     */
+&nbsp;    @PreAuthorize(&quot;hasAnyRole(&#39;ROLE_ADMINISTRATOR&#39;, &#39;ROLE_COLLABORATOR&#39;)&quot;)
+&nbsp;    public List&lt;ProductModel&gt; getAllProducts() {
+<b class="nc">&nbsp;        return productRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Retorna uma lista de produtos com nome correspondente à pesquisa.
+&nbsp;     *
+&nbsp;     * @param name o nome a ser pesquisado
+&nbsp;     * @return uma lista de produtos com nome correspondente à pesquisa
+&nbsp;     */
+&nbsp;    @PreAuthorize(&quot;hasAnyRole(&#39;ROLE_ADMINISTRATOR&#39;, &#39;ROLE_COLLABORATOR&#39;)&quot;)
+&nbsp;    public List&lt;ProductModel&gt; findByNameContaining(String name) throws ResourceNotFoundException {
+&nbsp;
+&nbsp;        // Remove os espaços em branco no início e no final da string
+<b class="nc">&nbsp;        String trimmedName = name.trim();</b>
+&nbsp;
+&nbsp;        //busca o produto pelo nome
+<b class="nc">&nbsp;        List&lt;ProductModel&gt; optionalProduct = productRepository.findByNameContainingIgnoreCase(trimmedName);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // verifica se produto existe
+<b class="nc">&nbsp;        if (optionalProduct.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new ResourceNotFoundException(&quot;Product not found with name containing: &quot; + name);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return optionalProduct;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Exclui o produto com o id fornecido.
+&nbsp;     * @param id o id do produto a ser excluído.
+&nbsp;     * @throws ResourceNotFoundException se não houver produto com o id fornecido.
+&nbsp;     */
+&nbsp;    @Transactional
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    public void deleteProduct(UUID id) throws ResourceNotFoundException {
+&nbsp;
+&nbsp;        //busca o produto pelo id
+<b class="nc">&nbsp;        Optional&lt;ProductModel&gt; optionalProduct = productRepository.findById(id);</b>
+&nbsp;
+&nbsp;        // verifica se produto existe
+<b class="nc">&nbsp;        if (optionalProduct.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new ResourceNotFoundException(&quot;Product not found with id: &quot; + id);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // exclui o produto encontrado
+<b class="nc">&nbsp;        ProductModel product = optionalProduct.get();</b>
+<b class="nc">&nbsp;        productRepository.deleteById(product.getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    /**
+&nbsp;     * Atualiza os dados do produto com o id fornecido com base nos dados fornecidos.
+&nbsp;     * @param id o id do produto a ser atualizado.
+&nbsp;     * @param productDTO um objeto ProductDTO contendo os novos dados de produto.
+&nbsp;     * @return um objeto ProductModel representando o produto atualizado.
+&nbsp;     * @throws ResourceNotFoundException se não houver produto com o id fornecido.
+&nbsp;     */
+&nbsp;    public ProductModel updateProduct(UUID id, ProductDTO productDTO) throws ResourceNotFoundException {
+&nbsp;
+<b class="nc">&nbsp;        Optional&lt;ProductModel&gt; optionalProduct = productRepository.findById(id);</b>
+&nbsp;
+&nbsp;        // verifica se o produto existe
+<b class="nc">&nbsp;        if (optionalProduct.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new ResourceNotFoundException(&quot;Product not found with id: &quot; + id);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Verifica se já existe um produto com o mesmo nome
+<b class="nc">&nbsp;        if (productRepository.findByNameIgnoreCase(productDTO.getName()).isPresent()) {</b>
+<b class="nc">&nbsp;            throw new DuplicateObjException(&quot;Product is already in use!&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Criar um produto com base no DTO
+<b class="nc">&nbsp;        var product = new ProductModel();</b>
+<b class="nc">&nbsp;        BeanUtils.copyProperties(productDTO, product);</b>
+&nbsp;
+&nbsp;
+&nbsp;        //Buscar id
+<b class="nc">&nbsp;        product.setId(optionalProduct.get().getId());</b>
+&nbsp;
+&nbsp;        // salva no banco de dados
+<b class="nc">&nbsp;        return productRepository.save(product);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-18 14:45</div>
+</div>
+</body>
+</html>

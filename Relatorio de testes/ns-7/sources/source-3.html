@@ -1,0 +1,312 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend2.services</a>
+</div>
+
+<h1>Coverage Summary for Class: UserService (com.example.backend2.services)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserService</td>
+<td class="coverageStat">
+  <span class="percent">
+    16,7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2,7%
+  </span>
+  <span class="absValue">
+    (1/37)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UserService$$SpringCGLIB$$0</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu$auxiliary$9m8qj4ga</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu$auxiliary$gs8hzqMO</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu$auxiliary$Ic9n2gHZ</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu$auxiliary$IIMSLZPq</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu$auxiliary$noLWttRp</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu$auxiliary$q4hlNbvj</td>
+  </tr>
+  <tr>
+    <td class="name">UserService$MockitoMock$IVKLRPdu$auxiliary$tcftKSNi</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    16,7%
+  </span>
+  <span class="absValue">
+    (1/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    2,7%
+  </span>
+  <span class="absValue">
+    (1/37)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend2.services;
+&nbsp;
+&nbsp;import com.example.backend2.dtos.UserDTO;
+&nbsp;import com.example.backend2.exceptions.*;
+&nbsp;import com.example.backend2.models.UserModel;
+&nbsp;import com.example.backend2.repositories.UserRepository;
+&nbsp;import org.springframework.beans.BeanUtils;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;
+&nbsp;import org.springframework.security.access.prepost.PreAuthorize;
+&nbsp;import org.springframework.security.crypto.password.PasswordEncoder;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import jakarta.transaction.Transactional;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class UserService {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    UserRepository userRepository;
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    PasswordEncoder passwordEncoder;
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    /**
+&nbsp;     * Cria um novo usuário com base no DTO fornecido e o salva no banco de dados.
+&nbsp;     * A senha do usuário será criptografada antes de ser salva no banco de dados.
+&nbsp;     *
+&nbsp;     * @param userDto o DTO que contém as informações do usuário a ser criado
+&nbsp;     * @return o usuário criado e salvo no banco de dados
+&nbsp;     * @throws DuplicateObjException se já existir um usuário com o mesmo e-mail
+&nbsp;     */
+&nbsp;
+&nbsp;    public UserModel createUser(UserDTO userDto) {
+&nbsp;
+&nbsp;        // Remove espaços em branco no início e no fim do nome
+<b class="nc">&nbsp;        userDto.setName(userDto.getName().trim());</b>
+&nbsp;
+&nbsp;        // Verifica se o e-mail está vazio ou nulo
+<b class="nc">&nbsp;        if (userDto.getEmail() == null || userDto.getEmail().isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;E-mail cannot be null or empty!&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Verifica se já existe um usuário com o mesmo e-mail
+<b class="nc">&nbsp;        if (userRepository.findByEmailIgnoreCase(userDto.getEmail()).isPresent()) {</b>
+<b class="nc">&nbsp;            throw new DuplicateObjException(&quot;E-mail is already in use!&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Cria um usuário com base no DTO
+<b class="nc">&nbsp;        var user = new UserModel();</b>
+<b class="nc">&nbsp;        BeanUtils.copyProperties(userDto, user);</b>
+<b class="nc">&nbsp;        user.setRegistrationDate(LocalDate.now());</b>
+&nbsp;
+&nbsp;        // Criptografa a senha do usuário antes de salvá-la
+<b class="nc">&nbsp;        user.setPassword(passwordEncoder.encode(userDto.getPassword()));</b>
+&nbsp;
+&nbsp;        // Salva o usuário no banco de dados
+<b class="nc">&nbsp;        return userRepository.save(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    /**
+&nbsp;     * Retorna uma lista de todos os usuários salvos no banco de dados.
+&nbsp;     *
+&nbsp;     * @return uma lista de todos os usuários salvos no banco de dados
+&nbsp;     */
+&nbsp;    public List&lt;UserModel&gt; getAllUsers() {
+<b class="nc">&nbsp;        return userRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    /**
+&nbsp;     * Retorna uma lista de usuários com nome correspondente à pesquisa.
+&nbsp;     *
+&nbsp;     * @param name o nome a ser pesquisado
+&nbsp;     * @return uma lista de usuários com nome correspondente à pesquisa
+&nbsp;     */
+&nbsp;    public List&lt;UserModel&gt; findByNameContaining(String name) throws ResourceNotFoundException {
+&nbsp;
+&nbsp;        // Remove os espaços em branco no início e no final da string
+<b class="nc">&nbsp;        String trimmedName = name.trim();</b>
+&nbsp;
+&nbsp;        //busca o user pelo nome
+<b class="nc">&nbsp;        List&lt;UserModel&gt; optionalUser = userRepository.findByNameContainingIgnoreCase(trimmedName);</b>
+&nbsp;
+&nbsp;
+&nbsp;        // verifica se user existe
+<b class="nc">&nbsp;        if (optionalUser.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new ResourceNotFoundException(&quot;User not found with name containing: &quot; + name);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        return optionalUser;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    /**
+&nbsp;     * Exclui o user com o id fornecido.
+&nbsp;     * @param id o id do user a ser excluída.
+&nbsp;     * @throws ResourceNotFoundException se não houver user com o id fornecido.
+&nbsp;     */
+&nbsp;    public void deleteUser(UUID id) throws ResourceNotFoundException {
+&nbsp;
+&nbsp;        //busca o user pelo id
+<b class="nc">&nbsp;        Optional&lt;UserModel&gt; optionalUser = userRepository.findById(id);</b>
+&nbsp;
+&nbsp;        // verifica se user existe
+<b class="nc">&nbsp;        if (optionalUser.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new ResourceNotFoundException(&quot;User not found with id: &quot; + id);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // exclui o user encontrado
+<b class="nc">&nbsp;        UserModel user = optionalUser.get();</b>
+<b class="nc">&nbsp;        userRepository.deleteById(user.getId());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    @PreAuthorize(&quot;hasRole(&#39;ROLE_ADMINISTRATOR&#39;)&quot;)
+&nbsp;    /**
+&nbsp;     * Atualiza os dados do user com o id fornecido com base nos dados fornecidos.
+&nbsp;     * Se a senha fornecida for diferente da senha armazenada, ela será criptografada antes de ser salva no banco de dados.
+&nbsp;     *
+&nbsp;     * @param id o id do user a ser atualizada.
+&nbsp;     * @param userDTO um objeto UserDTO contendo os novos dados de user.
+&nbsp;     * @return um objeto UserModel representando o user atualizado.
+&nbsp;     * @throws ResourceNotFoundException se não houver user com o id fornecido.
+&nbsp;     */
+&nbsp;
+&nbsp;    public UserModel updateUser(UUID id, UserDTO userDTO) throws ResourceNotFoundException {
+&nbsp;
+<b class="nc">&nbsp;        Optional&lt;UserModel&gt; optionalUser = userRepository.findById(id);</b>
+&nbsp;
+&nbsp;        // verifica se o user existe
+<b class="nc">&nbsp;        if (optionalUser.isEmpty()) {</b>
+<b class="nc">&nbsp;            throw new ResourceNotFoundException(&quot;User not found with id: &quot; + id);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        UserModel existingUser = optionalUser.get();</b>
+&nbsp;
+&nbsp;        // Verifica se o e-mail fornecido já está em uso por outro usuário
+<b class="nc">&nbsp;        Optional&lt;UserModel&gt; userWithEmail = userRepository.findByEmailIgnoreCase(userDTO.getEmail());</b>
+<b class="nc">&nbsp;        if (userWithEmail.isPresent() &amp;&amp; !userWithEmail.get().getId().equals(existingUser.getId())) {</b>
+<b class="nc">&nbsp;            throw new DuplicateObjException(&quot;E-mail is already in use!&quot;);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Criar um user com base no DTO
+<b class="nc">&nbsp;        var user = new UserModel();</b>
+<b class="nc">&nbsp;        BeanUtils.copyProperties(userDTO, user);</b>
+<b class="nc">&nbsp;        user.setRegistrationDate(existingUser.getRegistrationDate()); // Use a data de registro original</b>
+<b class="nc">&nbsp;        user.setId(existingUser.getId()); // Definir o ID do usuário</b>
+&nbsp;
+&nbsp;        // Verificar se a senha fornecida no DTO é diferente da senha armazenada
+<b class="nc">&nbsp;        if (!passwordEncoder.matches(userDTO.getPassword(), existingUser.getPassword())) {</b>
+&nbsp;            // Criptografar a nova senha antes de atualizar o usuário
+<b class="nc">&nbsp;            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            user.setPassword(existingUser.getPassword()); // Manter a senha existente</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // salva no banco de dados
+<b class="nc">&nbsp;        return userRepository.save(user);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-18 14:45</div>
+</div>
+</body>
+</html>

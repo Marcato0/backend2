@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend2.models</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductModel (com.example.backend2.models)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProductModel$Category</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ProductModel$HibernateProxy$Y3VUlTDS</td>
+  </tr>
+  <tr>
+    <td class="name">ProductModel$ProductStatus</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend2.models;
+&nbsp;
+&nbsp;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import lombok.Getter;
+&nbsp;import lombok.Setter;
+&nbsp;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.math.BigDecimal;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Getter
+<b class="fc">&nbsp;@Setter</b>
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;products&quot;)
+&nbsp;@Schema(description = &quot;Objeto ProductModel que representa os dados de um produto no banco de dados&quot;)
+<b class="fc">&nbsp;public class ProductModel implements Serializable {</b>
+&nbsp;
+&nbsp;    private static final long serialVersionUID = 1l;
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy =  GenerationType.AUTO)
+&nbsp;    @Schema(description = &quot;ID único do produto&quot;)
+<b class="fc">&nbsp;    private UUID id;</b>
+&nbsp;
+&nbsp;
+&nbsp;    @Column(nullable = false, unique = true)
+&nbsp;    @Schema(description = &quot;Nome do produto&quot;, example = &quot;Condorito 400&quot;)
+<b class="fc">&nbsp;    private String name;</b>
+&nbsp;
+&nbsp;
+&nbsp;    @Column(name = &quot;unit_price&quot;, nullable = false)
+&nbsp;    @Schema(description = &quot;Preço unitário do produto&quot;, example = &quot;100000.99&quot;)
+<b class="fc">&nbsp;    private BigDecimal unitPrice;</b>
+&nbsp;
+&nbsp;
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    @Column(nullable = false)
+&nbsp;    @Schema(description = &quot;Categoria do produto&quot;, example = &quot;MANUAL&quot;)
+<b class="fc">&nbsp;    private Category category;</b>
+&nbsp;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    @Schema(description = &quot;Descrição do produto&quot;, example = &quot;Desenvolvida para uma pulverização uniforme, &quot; +
+&nbsp;            &quot;custo reduzido de manutenção e alto rendimento operacional diário comparado com aplicações manuais.&quot;)
+<b class="fc">&nbsp;    private String description;</b>
+&nbsp;
+&nbsp;
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    @Column(nullable = false)
+&nbsp;    @Schema(description = &quot;Status do produto&quot;, example = &quot;AVAILABLE&quot;)
+<b class="fc">&nbsp;    private ProductStatus status;</b>
+&nbsp;
+<b class="fc">&nbsp;    public enum Category {</b>
+<b class="fc">&nbsp;        MANUAL,</b>
+<b class="fc">&nbsp;        ELECTRIC,</b>
+<b class="fc">&nbsp;        FUEL_POWERED</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public enum ProductStatus {</b>
+<b class="fc">&nbsp;        AVAILABLE,</b>
+<b class="fc">&nbsp;        UNAVAILABLE,</b>
+<b class="fc">&nbsp;        DISCONTINUED</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-18 14:45</div>
+</div>
+</body>
+</html>

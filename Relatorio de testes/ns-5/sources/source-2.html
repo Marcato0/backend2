@@ -1,0 +1,260 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserModel</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend2.models</a>
+</div>
+
+<h1>Coverage Summary for Class: UserModel (com.example.backend2.models)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    57,1%
+  </span>
+  <span class="absValue">
+    (8/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57,1%
+  </span>
+  <span class="absValue">
+    (8/14)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UserModel$AccessLevel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">UserModel$HibernateProxy$B0n3oq66</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    62,5%
+  </span>
+  <span class="absValue">
+    (10/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    64,7%
+  </span>
+  <span class="absValue">
+    (11/17)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend2.models;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;import io.swagger.v3.oas.annotations.media.Schema;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import lombok.Setter;
+&nbsp;import org.springframework.security.core.GrantedAuthority;
+&nbsp;import org.springframework.security.core.authority.SimpleGrantedAuthority;
+&nbsp;import org.springframework.security.core.userdetails.UserDetails;
+&nbsp;
+&nbsp;
+&nbsp;import java.io.Serializable;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.Collection;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.UUID;
+&nbsp;
+<b class="fc">&nbsp;@Setter</b>
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;users&quot;)
+&nbsp;@Schema(description = &quot;Objeto UserModel que representa os dados de um usuário no banco de dados&quot;)
+<b class="fc">&nbsp;public class UserModel implements UserDetails, Serializable {</b>
+&nbsp;
+&nbsp;    private static final long serialVersionUID = 1l;
+&nbsp;
+&nbsp;    @Id
+&nbsp;    @GeneratedValue(strategy =  GenerationType.AUTO)
+&nbsp;    @Schema(description = &quot;ID único do usuário&quot;)
+&nbsp;    private UUID id;
+&nbsp;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    @Schema(description = &quot;Nome completo do usuário&quot;, example = &quot;Caio Rolando da Rocha&quot;)
+&nbsp;    private String name;
+&nbsp;
+&nbsp;
+&nbsp;    @Column(nullable = false, unique = true)
+&nbsp;    @Schema(description = &quot;E-mail do usuário&quot;, example = &quot;caio@example.com&quot;)
+&nbsp;    private String email;
+&nbsp;
+&nbsp;
+&nbsp;    @Column(nullable = false)
+&nbsp;    @Schema(description = &quot;Senha do usuário&quot;, example = &quot;mypassword&quot;)
+&nbsp;    private String password;
+&nbsp;
+&nbsp;
+&nbsp;    @Column(name = &quot;registration_date&quot;, nullable = false)
+&nbsp;    @Schema(description = &quot;Data de cadastro do usuário&quot;, example = &quot;2023-01-01&quot;)
+&nbsp;    private LocalDate registrationDate;
+&nbsp;
+&nbsp;
+&nbsp;    @Enumerated(EnumType.STRING)
+&nbsp;    @Column(name = &quot;access_level&quot;, nullable = false)
+&nbsp;    @Schema(description = &quot;Nível de acesso do usuário&quot;, example = &quot;ADMINISTRATOR&quot;)
+&nbsp;    private AccessLevel accessLevel;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Schema(description = &quot;A autoridade concedida ao usuário&quot;, example = &quot;ROLE_ADMINISTRATOR&quot;)
+&nbsp;    public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<b class="nc">&nbsp;        return Collections.singletonList(new SimpleGrantedAuthority(&quot;ROLE_&quot; + accessLevel.name()));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public String getPassword() {
+<b class="fc">&nbsp;        return this.password;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Schema(description = &quot;E-mail do usuário&quot;,
+&nbsp;            example = &quot;caio@example.com&quot;)
+&nbsp;    public String getUsername() {
+<b class="nc">&nbsp;        return this.email;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Schema(description = &quot;Indica se a conta do usuário não está expirada.&quot;)
+&nbsp;    public boolean isAccountNonExpired() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Schema(description = &quot;Indica se a conta do usuário não está bloqueada.&quot;)
+&nbsp;    public boolean isAccountNonLocked() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Schema(description = &quot;Indica se as credenciais do usuário não estão expiradas.&quot;)
+&nbsp;    public boolean isCredentialsNonExpired() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Schema(description = &quot;Indica se a conta do usuário está habilitada.&quot;)
+&nbsp;    public boolean isEnabled() {
+<b class="nc">&nbsp;        return true;</b>
+&nbsp;    }
+&nbsp;
+<b class="fc">&nbsp;    public enum AccessLevel {</b>
+<b class="fc">&nbsp;        ADMINISTRATOR,</b>
+<b class="fc">&nbsp;        COLLABORATOR</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public UUID getId() {
+<b class="fc">&nbsp;        return id;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getName() {
+<b class="fc">&nbsp;        return name;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getEmail() {
+<b class="fc">&nbsp;        return email;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public LocalDate getRegistrationDate() {
+<b class="fc">&nbsp;        return registrationDate;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public AccessLevel getAccessLevel() {
+<b class="fc">&nbsp;        return accessLevel;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-18 14:45</div>
+</div>
+</body>
+</html>

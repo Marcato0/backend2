@@ -1,0 +1,197 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ProductController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.backend2.controllers</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductController (com.example.backend2.controllers)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.backend2.controllers;
+&nbsp;
+&nbsp;
+&nbsp;import com.example.backend2.dtos.ProductDTO;
+&nbsp;import com.example.backend2.exceptions.ResourceNotFoundException;
+&nbsp;
+&nbsp;import com.example.backend2.models.ProductModel;
+&nbsp;import com.example.backend2.services.ProductService;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import io.swagger.v3.oas.annotations.Operation;
+&nbsp;import io.swagger.v3.oas.annotations.tags.Tag;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@RestController
+&nbsp;@RequestMapping(&quot;/api/products&quot;)
+&nbsp;@Tag(name = &quot;Product Controller&quot;,
+&nbsp;        description = &quot;Controlador responsável por gerenciar operações relacionadas a produtos&quot;)
+<b class="fc">&nbsp;public class ProductController {</b>
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private ProductService productService;
+&nbsp;
+&nbsp;    @PostMapping
+&nbsp;    @Operation(summary = &quot;Cria um novo produto&quot;,
+&nbsp;            description = &quot;Cria um novo produto usando os dados fornecidos no ProductDTO e salva no banco de dados.\n&quot; +
+&nbsp;                    &quot;\n&quot; +
+&nbsp;                    &quot;@param productDto objeto ProductDTO enviado pelo cliente via HTTP request body.\n&quot; +
+&nbsp;                    &quot;@return objeto ProductModel criado.\n&quot;)
+&nbsp;    public ProductModel createProduct(@RequestBody ProductDTO productDto) {
+<b class="fc">&nbsp;        return productService.createProduct(productDto);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @GetMapping
+&nbsp;    @Operation(summary = &quot;Obter todos os produtos&quot;,
+&nbsp;            description = &quot;Retorna uma lista de todos os produtos registrados no banco de dados.\n&quot; +
+&nbsp;                    &quot;\n&quot; +
+&nbsp;                    &quot;@return objeto ResponseEntity com status HTTP OK e corpo da resposta contendo a lista de objetos ProductModel.\n&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;ProductModel&gt;&gt; getAllProducts() {
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.OK)</b>
+<b class="fc">&nbsp;                .body(productService.getAllProducts());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/search/{name}&quot;)
+&nbsp;    @Operation(summary = &quot;Buscar produtos por nome&quot;,
+&nbsp;            description = &quot;Retorna uma lista de produtos cujo nome contém o valor fornecido.\n&quot; +
+&nbsp;                    &quot;\n&quot; +
+&nbsp;                    &quot;@param name valor a ser pesquisado no campo &#39;name&#39; dos objetos ProductModel.\n&quot; +
+&nbsp;                    &quot;@return objeto ResponseEntity com status HTTP OK e corpo da resposta contendo a lista de objetos ProductModel.\n&quot; +
+&nbsp;                    &quot;@throws ResourceNotFoundException se nenhum produto for encontrado com o nome fornecido.\n&quot;)
+&nbsp;    public ResponseEntity&lt;List&lt;ProductModel&gt;&gt; findByNameContaining(@PathVariable String name) throws ResourceNotFoundException {
+<b class="fc">&nbsp;        List&lt;ProductModel&gt; products = productService.findByNameContaining(name);</b>
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.OK).body(products);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Excluir produto por ID&quot;,
+&nbsp;            description = &quot;Exclui um produto com base no ID fornecido.\n&quot; +
+&nbsp;                    &quot;\n&quot; +
+&nbsp;                    &quot;@param id ID do objeto ProductModel a ser removido.\n&quot; +
+&nbsp;                    &quot;@return objeto ResponseEntity com status HTTP OK e corpo da resposta contendo a mensagem &#39;Product deleted successfully.&#39;.\n&quot; +
+&nbsp;                    &quot;@throws ResourceNotFoundException se nenhum produto for encontrado com o ID fornecido.\n&quot;)
+&nbsp;    public ResponseEntity&lt;Object&gt; deleteProduct(@PathVariable UUID id) throws ResourceNotFoundException {
+<b class="fc">&nbsp;        productService.deleteProduct(id);</b>
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.OK).body(&quot;Product deleted successfully.&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @PutMapping(&quot;/{id}&quot;)
+&nbsp;    @Operation(summary = &quot;Atualizar produto por ID&quot;,
+&nbsp;            description = &quot;Atualiza os dados de um produto com base no ID fornecido e nas informações fornecidas no ProductDTO.\n&quot; +
+&nbsp;                    &quot;\n&quot; +
+&nbsp;                    &quot;@param id ID do objeto ProductModel a ser atualizado.\n&quot; +
+&nbsp;                    &quot;@param productDto objeto ProductDTO enviado pelo cliente via HTTP request body.\n&quot; +
+&nbsp;                    &quot;@return objeto ResponseEntity com status HTTP OK e corpo da resposta contendo o objeto ProductModel atualizado.\n&quot; +
+&nbsp;                    &quot;@throws ResourceNotFoundException se nenhum produto for encontrado com o ID fornecido.\n&quot;)
+&nbsp;    public ResponseEntity&lt;ProductModel&gt; updateProduct(@PathVariable UUID id,
+&nbsp;                                                      @RequestBody ProductDTO productDto)throws ResourceNotFoundException {
+&nbsp;
+<b class="fc">&nbsp;        ProductModel product = productService.updateProduct(id, productDto);</b>
+<b class="fc">&nbsp;        return ResponseEntity.status(HttpStatus.OK).body(product);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-18 14:45</div>
+</div>
+</body>
+</html>
