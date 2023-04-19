@@ -32,4 +32,4 @@ Onde foi implementado a autenticação dos usuarios.
 - [x] Implementação de testes unitários para cadastro de usuário e produto
 - [x] Publicação da API em ambiente de produção
 - [x] Automação do deploy utilizando CI/CD com Jenkins
-- [x] Entrega do projeto através do GitHub
+- [x] Entrega do projeto através do GitHub.
