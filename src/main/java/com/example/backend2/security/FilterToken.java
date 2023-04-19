@@ -23,6 +23,15 @@ public class FilterToken extends OncePerRequestFilter {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Filtro personalizado para autenticar o usuário com base no token JWT.
+     *
+     * @param request A requisição recebida.
+     * @param response A resposta a ser enviada.
+     * @param filterChain A cadeia de filtros.
+     * @throws ServletException Se ocorrer um erro na servlet.
+     * @throws IOException Se ocorrer um erro de entrada/saída.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -49,10 +58,24 @@ public class FilterToken extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * Converte a mensagem para um JSON.
+     *
+     * @param message A mensagem a ser convertida.
+     * @return A mensagem convertida em formato JSON.
+     */
     private String convertToJson(String message) {
         return String.format("{\"message\": \"%s\"}", message);
     }
 
+    /**
+     * Cria e envia uma resposta de erro.
+     *
+     * @param response A resposta a ser enviada.
+     * @param statusCode O código de status HTTP da resposta.
+     * @param message A mensagem de erro.
+     * @throws IOException Se ocorrer um erro de entrada/saída.
+     */
     private void buildErrorResponse(HttpServletResponse response,
                                     int statusCode, String message) throws IOException {
         response.setStatus(statusCode);
